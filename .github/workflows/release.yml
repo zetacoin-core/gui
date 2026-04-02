@@ -194,7 +194,7 @@ jobs:
         continue-on-error: true
 
       - name: Sign Windows binaries
-        if: ${{ secrets.CODESIGN_PFX_BASE64 != '' }}
+        continue-on-error: true
         uses: pacyworld/codesign-action@master
         with:
           pfx_base64: ${{ secrets.CODESIGN_PFX_BASE64 }}
@@ -204,7 +204,7 @@ jobs:
           url: "https://www.getzetacoin.com"
 
       - name: Sign NSIS installer
-        if: ${{ secrets.CODESIGN_PFX_BASE64 != '' }}
+        continue-on-error: true
         uses: pacyworld/codesign-action@master
         with:
           pfx_base64: ${{ secrets.CODESIGN_PFX_BASE64 }}
