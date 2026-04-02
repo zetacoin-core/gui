@@ -8,7 +8,7 @@ Only the latest release of Zetacoin Core is supported with security updates.
 
 To report security issues, please open a private security advisory on GitHub:
 
-  <https://github.com/tuaris/zetacoin/security/advisories/new>
+  <https://github.com/zetacoin-core/gui/security/advisories/new>
 
 Alternatively, email daniel@morante.net.
 

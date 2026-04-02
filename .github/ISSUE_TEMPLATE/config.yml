@@ -1,7 +1,7 @@
 blank_issues_enabled: true
 contact_links:
   - name: Zetacoin Core Security Policy
-    url: https://github.com/tuaris/zetacoin/blob/master/SECURITY.md
+    url: https://github.com/zetacoin-core/gui/blob/master/SECURITY.md
     about: View security policy
   - name: Zetacoin Core
     url: https://www.getzetacoin.com

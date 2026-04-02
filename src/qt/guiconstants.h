@@ -47,7 +47,7 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "Zetacoin"
-#define QAPP_ORG_DOMAIN "github.com/tuaris/zetacoin"
+#define QAPP_ORG_DOMAIN "github.com/zetacoin-core/gui"
 #define QAPP_APP_NAME_DEFAULT "Zetacoin-Qt"
 #define QAPP_APP_NAME_TESTNET "Zetacoin-Qt-testnet"
 #define QAPP_APP_NAME_TESTNET4 "Zetacoin-Qt-testnet4"

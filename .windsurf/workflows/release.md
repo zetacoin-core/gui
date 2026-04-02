@@ -66,7 +66,7 @@ git tag -d v{VERSION}-rc1
 git push origin :refs/tags/v{VERSION}-rc1
 
 # Delete RC GitHub releases via API
-curl -X DELETE "https://api.github.com/repos/tuaris/zetacoin/releases/{RC_RELEASE_ID}" \
+curl -X DELETE "https://api.github.com/repos/zetacoin-core/gui/releases/{RC_RELEASE_ID}" \
   -H "Authorization: token $(grep password ~/.netrc | awk 'NR==1{print $2}')"
 ```
 
@@ -123,6 +123,6 @@ After poudriere passes:
 
 ## Remotes
 
-- **GitHub**: `origin` → https://github.com/tuaris/zetacoin
+- **GitHub**: `origin` → https://github.com/zetacoin-core/gui
 - **Pacyworld**: `pacyworld` → https://pacyworld.dev/zetacoin/zetacoin
 - Tags must be pushed to both remotes

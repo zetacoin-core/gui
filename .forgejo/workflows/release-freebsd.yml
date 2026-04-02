@@ -146,7 +146,7 @@ jobs:
           GH_TOKEN="${{ secrets.GH_UPLOAD_TOKEN }}"
           if [ -n "${GH_TOKEN}" ]; then
             GH_API="https://api.github.com"
-            GH_REPO="tuaris/zetacoin"
+            GH_REPO="zetacoin-core/gui"
 
             RELEASE_ID=$(curl -s -H "Authorization: token ${GH_TOKEN}" \
               "${GH_API}/repos/${GH_REPO}/releases/tags/${TAG}" | \

@@ -6,7 +6,7 @@ Zetacoin Core, rebased onto Bitcoin Core 30.2.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/tuaris/zetacoin/issues>
+  <https://github.com/zetacoin-core/gui/issues>
 
 Upgrading from Zetacoin Core v0.13.2.1
 =======================================

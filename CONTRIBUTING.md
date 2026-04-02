@@ -18,7 +18,7 @@ Communication Channels
 ----------------------
 
 Discussion about codebase improvements happens in GitHub issues and pull
-requests at <https://github.com/tuaris/zetacoin>.
+requests at <https://github.com/zetacoin-core/gui>.
 
 Contributor Workflow
 --------------------

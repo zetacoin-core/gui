@@ -64,7 +64,7 @@ endif()
 
 set(COPYRIGHT_HOLDERS "The %s developers")
 set(COPYRIGHT_HOLDERS_FINAL "The ${CLIENT_NAME} developers")
-set(CLIENT_BUGREPORT "https://github.com/tuaris/zetacoin/issues")
+set(CLIENT_BUGREPORT "https://github.com/zetacoin-core/gui/issues")
 
 #=============================
 # Language setup
@@ -736,8 +736,8 @@ if(WIN32)
   set(CPACK_NSIS_PACKAGE_NAME "Zetacoin Core ${PROJECT_VERSION}")
   set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/share/pixmaps/zetacoin.ico")
   set(CPACK_NSIS_MUI_UNIICON "${PROJECT_SOURCE_DIR}/share/pixmaps/zetacoin.ico")
-  set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/tuaris/zetacoin")
-  set(CPACK_NSIS_HELP_LINK "https://github.com/tuaris/zetacoin/issues")
+  set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/zetacoin-core/gui")
+  set(CPACK_NSIS_HELP_LINK "https://github.com/zetacoin-core/gui/issues")
   set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\zetacoin-qt.exe")
   set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)

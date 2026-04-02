@@ -29,7 +29,7 @@ Drag Zetacoin Core to your applications folder, and then run Zetacoin Core.
 
 ### Need Help?
 
-* File an issue on [GitHub](https://github.com/tuaris/zetacoin/issues).
+* File an issue on [GitHub](https://github.com/zetacoin-core/gui/issues).
 
 Building
 ---------------------
