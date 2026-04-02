@@ -11,6 +11,11 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. v0.14.0)'
+        required: true
 
 permissions:
   contents: write
