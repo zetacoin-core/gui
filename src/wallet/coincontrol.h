@@ -19,7 +19,7 @@
 
 namespace wallet {
 const int DEFAULT_MIN_DEPTH = 0;
-const int DEFAULT_MAX_DEPTH = 9999999;
+const int DEFAULT_MAX_DEPTH = 999999999;
 
 const int DEFAULT_WALLET_TX_VERSION = CTransaction::CURRENT_VERSION;
 
