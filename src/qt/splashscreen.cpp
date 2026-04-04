@@ -28,11 +28,15 @@
 SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
     : QWidget()
 {
-    // set reference point, paddings
-    int paddingRight            = 50;
-    int paddingTop              = 50;
-    int titleVersionVSpace      = 17;
-    int titleCopyrightVSpace    = 40;
+    // Layout constants
+    const int splashW = 480;
+    const int splashH = 320;
+    const int panelW = splashW / 3;           // Left panel = 33%
+    const int textX = panelW + 8;             // Text starts 8px right of panel
+    const int textPaddingRight = 15;
+    const int titleY = 55;
+    const int titleVersionVSpace = 20;
+    const int titleCopyrightVSpace = 45;
 
     float fontFactor            = 1.0;
     float devicePixelRatio      = 1.0;
@@ -47,60 +51,107 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
     QString font            = QApplication::font().toString();
 
     // create a bitmap according to device pixelratio
-    QSize splashSize(480*devicePixelRatio,320*devicePixelRatio);
+    QSize splashSize(splashW*devicePixelRatio, splashH*devicePixelRatio);
     pixmap = QPixmap(splashSize);
 
     // change to HiDPI if it makes sense
     pixmap.setDevicePixelRatio(devicePixelRatio);
 
     QPainter pixPaint(&pixmap);
-    pixPaint.setPen(QColor(100,100,100));
 
-    // draw a slightly radial gradient
-    QRadialGradient gradient(QPoint(0,0), splashSize.width()/devicePixelRatio);
-    gradient.setColorAt(0, Qt::white);
-    gradient.setColorAt(1, QColor(247,247,247));
-    QRect rGradient(QPoint(0,0), splashSize);
-    pixPaint.fillRect(rGradient, gradient);
+    // draw right side background (light gray)
+    pixPaint.fillRect(QRect(QPoint(0,0), splashSize), QColor(240, 240, 240));
 
-    // draw the bitcoin icon, expected size of PNG: 1024x1024
-    QRect rectIcon(QPoint(-150,-122), QSize(430,430));
+    // draw left panel: teal gradient
+    QLinearGradient tealGrad(QPoint(0, 0), QPoint(panelW, splashH));
+    tealGrad.setColorAt(0.0, QColor(13, 79, 90));    // #0D4F5A
+    tealGrad.setColorAt(0.4, QColor(26, 107, 133));   // #1A6B85
+    tealGrad.setColorAt(0.7, QColor(29, 111, 137));   // #1D6F89
+    tealGrad.setColorAt(1.0, QColor(20, 80, 94));     // #14505E
+    pixPaint.fillRect(QRect(0, 0, panelW, splashH), tealGrad);
 
-    const QSize requiredSize(1024,1024);
+    // draw binary code overlay on left panel (subtle)
+    {
+        pixPaint.save();
+        pixPaint.setClipRect(QRect(0, 0, panelW, splashH));
+        QFont monoFont("Courier New", 6);
+        monoFont.setWeight(QFont::Bold);
+        pixPaint.setFont(monoFont);
+        pixPaint.setPen(QColor(255, 255, 255, 22)); // ~8.5% opacity
+        const char* binaryLines[] = {
+            "01001010 11010010 00110101 10101100 01110010",
+            "10110101 00101101 11001010 01010110 10110100",
+            "00101010 11010110 01010100 10110010 11001101",
+            "11001010 01010110 10110100 00101101 01001010",
+            "01010101 10110010 11001100 10100101 00101010",
+            "10100110 01011010 01110101 10011010 01101100",
+            "01110010 11001010 01010110 10110100 00101101",
+            "11001101 00101011 10100110 01011010 01110101",
+            "00110101 10101100 01110010 11001010 01010110",
+            "01101011 10010101 01011010 10110010 01010101",
+            "10011010 01101100 10101001 01010110 11001010",
+            "10100101 00101010 11010110 01010100 10110010",
+            "10101100 01001010 11010010 00110101 10101100",
+            "10100101 00101010 11010110 01010100 10110010",
+            "01001010 11010010 00101101 01101011 10010101",
+            "10100110 01011010 01110101 10011010 01101100",
+            "01110010 11001010 01010110 10110100 00101101",
+            "11001101 00101011 10100110 01011010 01110101",
+            "10010101 01011010 10110010 01010101 11001100",
+            "01101100 10101001 01010110 11001010 00110101",
+            "00101101 01101011 10010101 01011010 10110010",
+            "01110101 10011010 01101100 10101001 01010110",
+            "11001100 10100101 00101010 11010110 01010100",
+            "00110101 10101100 01110010 11001010 01010110",
+            "01101011 10010101 01011010 10110010 01010101",
+            "10011010 01101100 10101001 01010110 11001010",
+        };
+        int lineH = 13;
+        for (int i = 0; i < 26; i++) {
+            int xOff = (i % 5) * (-8) - 15;
+            pixPaint.drawText(xOff, 10 + i * lineH, QString(binaryLines[i]));
+        }
+        pixPaint.restore();
+    }
+
+    // draw the icon centered on left panel
+    const QSize requiredSize(1024, 1024);
     QPixmap icon(networkStyle->getAppIcon().pixmap(requiredSize));
-
+    int iconSize = panelW - 30;
+    QRect rectIcon(
+        (panelW - iconSize) / 2,
+        (splashH - iconSize) / 2,
+        iconSize, iconSize
+    );
+    pixPaint.setOpacity(0.25);
     pixPaint.drawPixmap(rectIcon, icon);
+    pixPaint.setOpacity(1.0);
 
-    // check font size and drawing with
-    pixPaint.setFont(QFont(font, 33*fontFactor));
+    // Title text
+    pixPaint.setPen(QColor(51, 51, 51));
+    pixPaint.setFont(QFont(font, 22*fontFactor));
     QFontMetrics fm = pixPaint.fontMetrics();
     int titleTextWidth = GUIUtil::TextWidth(fm, titleText);
-    if (titleTextWidth > 176) {
-        fontFactor = fontFactor * 176 / titleTextWidth;
+    int maxTextW = splashW - textX - textPaddingRight;
+    if (titleTextWidth > maxTextW) {
+        fontFactor = fontFactor * maxTextW / titleTextWidth;
+        pixPaint.setFont(QFont(font, 22*fontFactor));
+        fm = pixPaint.fontMetrics();
+        titleTextWidth = GUIUtil::TextWidth(fm, titleText);
     }
+    pixPaint.drawText(textX, titleY, titleText);
 
-    pixPaint.setFont(QFont(font, 33*fontFactor));
-    fm = pixPaint.fontMetrics();
-    titleTextWidth  = GUIUtil::TextWidth(fm, titleText);
-    pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop,titleText);
+    // Version text
+    pixPaint.setPen(QColor(100, 100, 100));
+    pixPaint.setFont(QFont(font, 11*fontFactor));
+    pixPaint.drawText(textX, titleY + titleVersionVSpace, versionText);
 
-    pixPaint.setFont(QFont(font, 15*fontFactor));
-
-    // if the version string is too long, reduce size
-    fm = pixPaint.fontMetrics();
-    int versionTextWidth  = GUIUtil::TextWidth(fm, versionText);
-    if(versionTextWidth > titleTextWidth+paddingRight-10) {
-        pixPaint.setFont(QFont(font, 10*fontFactor));
-        titleVersionVSpace -= 5;
-    }
-    pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight+2,paddingTop+titleVersionVSpace,versionText);
-
-    // draw copyright stuff
+    // Copyright text
     {
-        pixPaint.setFont(QFont(font, 10*fontFactor));
-        const int x = pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight;
-        const int y = paddingTop+titleCopyrightVSpace;
-        QRect copyrightRect(x, y, pixmap.width() - x - paddingRight, pixmap.height() - y);
+        pixPaint.setPen(QColor(136, 136, 136));
+        pixPaint.setFont(QFont(font, 9*fontFactor));
+        const int y = titleY + titleCopyrightVSpace;
+        QRect copyrightRect(textX, y, maxTextW, splashH - y - 80);
         pixPaint.drawText(copyrightRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, copyrightText);
     }
 
@@ -111,7 +162,7 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
         pixPaint.setFont(boldFont);
         fm = pixPaint.fontMetrics();
         int titleAddTextWidth  = GUIUtil::TextWidth(fm, titleAddText);
-        pixPaint.drawText(pixmap.width()/devicePixelRatio-titleAddTextWidth-10,15,titleAddText);
+        pixPaint.drawText(splashW - titleAddTextWidth - 10, 15, titleAddText);
     }
 
     pixPaint.end();
@@ -220,9 +271,11 @@ void SplashScreen::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.drawPixmap(0, 0, pixmap);
-    QRect r = rect().adjusted(5, 5, -5, -5);
+    // Draw status message centered in the right section (right 67%)
+    int panelW = width() / 3;
+    QRect msgRect(panelW, height() / 2, width() - panelW, height() / 2);
     painter.setPen(curColor);
-    painter.drawText(r, curAlignment, curMessage);
+    painter.drawText(msgRect, Qt::AlignHCenter | Qt::AlignVCenter, curMessage);
 }
 
 void SplashScreen::closeEvent(QCloseEvent *event)
