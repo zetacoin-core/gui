@@ -59,8 +59,8 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
 
     QPainter pixPaint(&pixmap);
 
-    // draw right side background (light gray)
-    pixPaint.fillRect(QRect(QPoint(0,0), splashSize), QColor(240, 240, 240));
+    // draw right side background (pure white)
+    pixPaint.fillRect(QRect(QPoint(0,0), splashSize), Qt::white);
 
     // draw left panel: teal gradient
     QLinearGradient tealGrad(QPoint(0, 0), QPoint(panelW, splashH));
@@ -117,15 +117,13 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
     // draw the embossed zeta symbol centered on left panel
     // Loaded from compiled Qt resource (:/splash/embossed-zeta)
     QPixmap icon(":/splash/embossed-zeta");
-    int iconSize = panelW - 30;
+    int iconSize = panelW + 20;
     QRect rectIcon(
         (panelW - iconSize) / 2,
         (splashH - iconSize) / 2,
         iconSize, iconSize
     );
-    pixPaint.setOpacity(0.25);
     pixPaint.drawPixmap(rectIcon, icon);
-    pixPaint.setOpacity(1.0);
 
     // Title text
     pixPaint.setPen(QColor(51, 51, 51));
@@ -149,7 +147,7 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
     // Copyright text
     {
         pixPaint.setPen(QColor(136, 136, 136));
-        pixPaint.setFont(QFont(font, 9*fontFactor));
+        pixPaint.setFont(QFont(font, 8*fontFactor));
         const int y = titleY + titleCopyrightVSpace;
         QRect copyrightRect(textX, y, maxTextW, splashH - y - 80);
         pixPaint.drawText(copyrightRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, copyrightText);
