@@ -101,7 +101,7 @@ jobs:
       - name: Create DMG
         working-directory: build
         run: |
-          VOLNAME="Zetacoin-Core"
+          VOLNAME="Zetacoin Core"
           DMG_NAME="zetacoin-${VERSION#v}-macos-${{ matrix.arch }}.dmg"
           # Find the .app bundle
           if [ -d "dist/Zetacoin-Qt.app" ]; then
