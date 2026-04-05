@@ -86,4 +86,7 @@
     <qresource prefix="/fonts">
         <file alias="monospace">res/fonts/RobotoMono-Bold.ttf</file>
     </qresource>
+    <qresource prefix="/splash">
+        <file alias="embossed-zeta">res/splash/zetacoin-symbol-embossed.png</file>
+    </qresource>
 </RCC>

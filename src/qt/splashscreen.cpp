@@ -114,9 +114,9 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
         pixPaint.restore();
     }
 
-    // draw the icon centered on left panel
-    const QSize requiredSize(1024, 1024);
-    QPixmap icon(networkStyle->getAppIcon().pixmap(requiredSize));
+    // draw the embossed zeta symbol centered on left panel
+    // Loaded from compiled Qt resource (:/splash/embossed-zeta)
+    QPixmap icon(":/splash/embossed-zeta");
     int iconSize = panelW - 30;
     QRect rectIcon(
         (panelW - iconSize) / 2,
