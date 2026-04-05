@@ -81,15 +81,22 @@ jobs:
       - name: Build
         run: cmake --build build -j$(sysctl -n hw.ncpu)
 
+      - name: Generate app .icns from PNG
+        run: |
+          # Generate proper multi-size .icns from the 256x256 app icon
+          mkdir -p appicon.iconset
+          SRC="${GITHUB_WORKSPACE}/src/qt/res/icons/bitcoin.png"
+          sips -z 256 256 "$SRC" --out appicon.iconset/icon_256x256.png >/dev/null
+          sips -z 128 128 "$SRC" --out appicon.iconset/icon_128x128.png >/dev/null
+          sips -z 128 128 "$SRC" --out appicon.iconset/icon_256x256@2x.png >/dev/null 2>&1 || cp appicon.iconset/icon_128x128.png appicon.iconset/icon_128x128.png
+          sips -z 64 64 "$SRC" --out appicon.iconset/icon_32x32@2x.png >/dev/null
+          sips -z 32 32 "$SRC" --out appicon.iconset/icon_32x32.png >/dev/null
+          sips -z 16 16 "$SRC" --out appicon.iconset/icon_16x16.png >/dev/null
+          iconutil -c icns appicon.iconset -o "${GITHUB_WORKSPACE}/src/qt/res/icons/zetacoin.icns"
+
       - name: Create app bundle
         working-directory: build
         run: cmake --build . --target deploy
-
-      - name: Generate DMG background from SVG
-        run: |
-          rsvg-convert -w 500 -h 320 \
-            "${GITHUB_WORKSPACE}/contrib/macdeploy/dmg-background.svg" \
-            -o "${GITHUB_WORKSPACE}/build/dmg-background.png"
 
       - name: Create DMG
         working-directory: build
@@ -104,10 +111,25 @@ jobs:
           fi
           # Rename to "Zetacoin Core.app" for cleaner display in DMG
           cp -R "${APP_PATH}" "Zetacoin Core.app"
+          # Copy background PNG to build directory
+          cp "${GITHUB_WORKSPACE}/contrib/macdeploy/dmg-background.png" dmg-background.png
+          # Generate volume icon from harddisk SVG
+          rsvg-convert -w 512 -h 512 \
+            "${GITHUB_WORKSPACE}/contrib/macdeploy/zetacoin-harddisk.svg" \
+            -o volicon.png
+          # Create .icns from the volume icon PNG using sips
+          mkdir -p volicon.iconset
+          sips -z 512 512 volicon.png --out volicon.iconset/icon_512x512.png >/dev/null
+          sips -z 256 256 volicon.png --out volicon.iconset/icon_256x256.png >/dev/null
+          sips -z 128 128 volicon.png --out volicon.iconset/icon_128x128.png >/dev/null
+          sips -z 64 64 volicon.png --out volicon.iconset/icon_32x32@2x.png >/dev/null
+          sips -z 32 32 volicon.png --out volicon.iconset/icon_32x32.png >/dev/null
+          sips -z 16 16 volicon.png --out volicon.iconset/icon_16x16.png >/dev/null
+          iconutil -c icns volicon.iconset -o volicon.icns
           # Create branded DMG with Firefox-style layout
           create-dmg \
             --volname "${VOLNAME}" \
-            --volicon "${GITHUB_WORKSPACE}/src/qt/res/icons/zetacoin.icns" \
+            --volicon "volicon.icns" \
             --background "dmg-background.png" \
             --window-pos 200 120 \
             --window-size 500 320 \
