@@ -79,6 +79,6 @@
   <text x="168" y="148" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9" fill="#888888">Copyright (C) 2009-2026 The Bitcoin Core</text>
   <text x="168" y="161" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="9" fill="#888888">developers</text>
 
-  <!-- Loading status centered in right section (right panel center = 160 + (320/2) = 320, vertical center ~200) -->
-  <text x="320" y="260" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#555555">Loading block index...</text>
+  <!-- Loading status: horizontally centered in right section, near bottom -->
+  <text x="320" y="305" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#555555">Loading block index...</text>
 </svg>

@@ -271,11 +271,12 @@ void SplashScreen::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.drawPixmap(0, 0, pixmap);
-    // Draw status message centered in the right section (right 67%)
+    // Draw status message: horizontally centered in right section, near the bottom
     int panelW = width() / 3;
-    QRect msgRect(panelW, height() / 2, width() - panelW, height() / 2);
+    QRect msgRect(panelW, 0, width() - panelW, height());
+    msgRect.adjust(5, 5, -5, -5);
     painter.setPen(curColor);
-    painter.drawText(msgRect, Qt::AlignHCenter | Qt::AlignVCenter, curMessage);
+    painter.drawText(msgRect, Qt::AlignHCenter | Qt::AlignBottom, curMessage);
 }
 
 void SplashScreen::closeEvent(QCloseEvent *event)
