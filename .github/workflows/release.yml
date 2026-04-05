@@ -87,7 +87,7 @@ jobs:
 
       - name: Generate DMG background from SVG
         run: |
-          rsvg-convert -w 1000 -h 640 \
+          rsvg-convert -w 500 -h 320 \
             "${GITHUB_WORKSPACE}/contrib/macdeploy/dmg-background.svg" \
             -o "${GITHUB_WORKSPACE}/build/dmg-background.png"
 
@@ -107,12 +107,13 @@ jobs:
           # Create branded DMG with Firefox-style layout
           create-dmg \
             --volname "${VOLNAME}" \
+            --volicon "${GITHUB_WORKSPACE}/src/qt/res/icons/zetacoin.icns" \
             --background "dmg-background.png" \
             --window-pos 200 120 \
             --window-size 500 320 \
-            --icon-size 128 \
-            --icon "Zetacoin Core.app" 130 150 \
-            --app-drop-link 370 150 \
+            --icon-size 100 \
+            --icon "Zetacoin Core.app" 130 185 \
+            --app-drop-link 370 185 \
             --hide-extension "Zetacoin Core.app" \
             --no-internet-enable \
             "${DMG_NAME}" \
