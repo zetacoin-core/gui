@@ -87,9 +87,11 @@ zetacoind_precmd()
   pid=$(check_pidfile "${pidfile}" "${procname}")
   if [ -z "${pid}" ]
   then
-    echo "Zetacoind is not running"
     rm -f "${pidfile}"
   fi
+
+  # Pre-create PID file owned by service user (zetacoind writes to it via -pid flag)
+  install -o "${zetacoind_user}" -g "${zetacoind_group}" -m 644 /dev/null "${pidfile}"
 
   if checkyesno zetacoindlimits_enable
   then
@@ -116,10 +118,11 @@ zetacoind_start()
 {
   echo "Starting zetacoind:"
   cd "${zetacoind_data_dir}" || return 1
-  ${daemon_command} -u "${zetacoind_user}" -p "${pidfile}" -f \
-    ${command} \
-    -conf="${zetacoind_config_file}" \
-    -datadir="${zetacoind_data_dir}"
+  su -m "${zetacoind_user}" -c "${command} \
+    -conf=${zetacoind_config_file} \
+    -datadir=${zetacoind_data_dir} \
+    -pid=${pidfile} \
+    -daemon"
 }
 
 zetacoind_stop()
